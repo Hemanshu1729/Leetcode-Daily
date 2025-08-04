@@ -1,0 +1,23 @@
+class Solution:
+    def minCost(self, basket1: List[int], basket2: List[int]) -> int:
+        mn=min(min(basket1),min(basket2))
+        f=collections.Counter(basket1+basket2)
+        for k,v in f.items():
+            if v%2==1:
+        
+                return -1
+
+        f1=collections.Counter(basket1)-collections.Counter(basket2)
+        f2=collections.Counter(basket2)-collections.Counter(basket1)
+
+        swap=[]
+        for k,v in list(f1.items()) + list(f2.items()):
+            for _ in range(v//2):
+                swap.append(k)
+        swap.sort()
+        m=len(swap)
+
+        cost=0
+        for i in range(m//2):
+            cost+=min(swap[i],mn*2)
+        return cost
