@@ -1,0 +1,14 @@
+class Solution:
+    def totalFruit(self, fruits: List[int]) -> int:
+        n=len(fruits)
+        l=0
+        mapp=defaultdict(int)
+        res=0
+        for r in range(n):
+            mapp[fruits[r]]+=1
+            while len(mapp)>2:
+                mapp[fruits[l]]-=1
+                if mapp[fruits[l]]==0:del mapp[fruits[l]]
+                l+=1
+            res=max(res,r-l+1)
+        return res
