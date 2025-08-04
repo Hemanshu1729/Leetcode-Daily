@@ -1,0 +1,24 @@
+class Solution:
+    def maxTotalFruits(self, fruits: List[List[int]], startPos: int, k: int) -> int:
+        n=len(fruits)
+        tot=0
+        res=0
+
+        def steps(l,r):
+            if fruits[l][0]>=startPos :
+                return fruits[r][0]-startPos
+            elif fruits[r][0]<=startPos :return startPos-fruits[l][0]
+            else:return min(startPos-fruits[l][0],fruits[r][0]-startPos)+fruits[r][0]-fruits[l][0]
+
+
+
+        l=0
+        for r  in range(n):
+            tot+=fruits[r][1]
+            while l<=r and steps(l,r)>k:
+                tot-=fruits[l][1]
+
+                l+=1
+            res=max(res,tot)
+        return res
+
