@@ -1,0 +1,16 @@
+class Solution:
+    def numOfUnplacedFruits(self, fruits: List[int], baskets: List[int]) -> int:
+        n=len(baskets)
+        used=set()
+        res=0
+        for f in fruits:
+            used_f=0
+            for bi in range(n):
+                if bi in used or baskets[bi]<f:continue
+                used.add(bi)
+                used_f=1
+                break
+            if not used_f:
+                res+=1
+        return res
+        
