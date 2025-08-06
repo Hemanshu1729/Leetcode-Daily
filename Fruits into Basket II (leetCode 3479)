@@ -1,0 +1,65 @@
+Solution 1
+
+class Solution:
+    def numOfUnplacedFruits(self, fruits: List[int], baskets: List[int]) -> int:
+        n=len(baskets)
+        group=int(sqrt(n))
+        group_count=(n+group)//group
+        groups=[0]*group_count
+        for i in range(n):
+            groups[i//group]=max(groups[i//group],baskets[i])
+        res=0
+        for f in fruits:
+            used=False
+            for i in range(group_count):
+                if groups[i]<f:continue
+                groups[i]=0
+                pos=i*group
+                for j in range(pos,min(n,pos+group)):
+                    if baskets[j]>=f and not used:
+                        baskets[j]=0
+                        used=True
+                    groups[i]=max(groups[i],baskets[j])
+                break
+            if not used:
+                res+=1
+        return res
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+solution 2 (Segment trees)
+
+class Solution:
+    def numOfUnplacedFruits(self, fruits: List[int], baskets: List[int]) -> int:
+        n=len(baskets)
+        size=4*n
+        seg=[0]*size
+        def build(n,l,r):
+            if l==r:
+                seg[n]=baskets[l]
+                return
+            mid=(r+l)//2
+            build(n*2,l,mid)
+            build(n*2+1,mid+1,r)
+            seg[n]=max(seg[n*2],seg[2*n+1])
+        build(1,0,n-1)
+        
+        def find(n,l,r,fruit):
+            if fruit>seg[n]:return -1
+            if l==r:
+                seg[n]=-1
+                return l
+            mid=(l+r)//2
+            candidate=find(n*2,l,mid,fruit)
+            if candidate==-1:
+                candidate=find(n*2+1,mid+1,r,fruit)
+            seg[n]=max(seg[n*2],seg[n*2+1])
+            return candidate
+        res=0
+        for fruit in fruits:
+            if find(1,0,n-1,fruit)==-1:res+=1
+        return res
+
+
+
