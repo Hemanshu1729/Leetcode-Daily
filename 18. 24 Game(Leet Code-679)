@@ -1,0 +1,46 @@
+from fractions import Fraction
+class Solution:
+    def judgePoint24(self, cards: List[int]) -> bool:
+        
+        found=False
+
+        def game(cards):
+            if len(cards)==1:
+                if cards[0]==24:
+                    nonlocal found
+                    found=True
+                    return
+                return
+            
+            if found:
+                return
+
+            for i in range(len(cards)):
+                for j in range(i+1,len(cards)):
+                    nxt_cards=cards[:i] +cards[i+1:j] +cards[j+1:]
+                    a=cards[i]
+                    b=cards[j]
+                    nxt_cards.append(a+b)
+                    game(nxt_cards)
+                    nxt_cards.pop()
+                    nxt_cards.append(a-b)
+                    game(nxt_cards)
+                    nxt_cards.pop()
+                    nxt_cards.append(b-a)
+                    game(nxt_cards)
+                    nxt_cards.pop()
+                    nxt_cards.append(a*b)
+                    game(nxt_cards)
+                    nxt_cards.pop()
+                    if a!=0:
+                        nxt_cards.append(b/a)
+                        game(nxt_cards)
+                        nxt_cards.pop()
+                    if b!=0:
+                        nxt_cards.append(a/b)
+                        game(nxt_cards)
+                        nxt_cards.pop()
+
+        game(list(Fraction(x)for x in cards))
+        return found
+        
