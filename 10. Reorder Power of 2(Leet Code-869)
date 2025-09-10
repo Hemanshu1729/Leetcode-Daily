@@ -1,0 +1,11 @@
+class Solution:
+    def reorderedPowerOf2(self, n: int) -> bool:
+        def fun(x):
+            return ''.join(sorted(str(x)))
+
+        p=set()
+        for i in range(32):
+            num=pow(2,i)
+            p.add(fun(num))
+        return fun(n) in p
+        
